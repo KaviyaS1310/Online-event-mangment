@@ -1,37 +1,3 @@
-// import { useState } from 'react';
-// import { useNavigate, Link } from 'react-router-dom';
-// import API from '../api';
-
-// const Register = () => {
-//   const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'admin' });
-//   const navigate = useNavigate();
-
-//   const handleRegister = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await API.post('/auth/register', formData);
-//       alert("Registration Successful! Please login.");
-//       navigate('/login');
-//     } catch (err) {
-//       alert(err.response?.data?.message || "Registration Failed");
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: '20px', maxWidth: '400px', margin: '50px auto', border: '1px solid #ccc', borderRadius: '8px' }}>
-//       <h2>Create Admin Account</h2>
-//       <form onSubmit={handleRegister}>
-//         <input style={{ display: 'block', width: '100%', marginBottom: '10px' }} type="text" placeholder="Full Name" onChange={(e) => setFormData({...formData, name: e.target.value})} required />
-//         <input style={{ display: 'block', width: '100%', marginBottom: '10px' }} type="email" placeholder="Email" onChange={(e) => setFormData({...formData, email: e.target.value})} required />
-//         <input style={{ display: 'block', width: '100%', marginBottom: '10px' }} type="password" placeholder="Password" onChange={(e) => setFormData({...formData, password: e.target.value})} required />
-//         <button type="submit" style={{ width: '100%', padding: '10px', background: '#3498db', color: '#fff', border: 'none', borderRadius: '4px' }}>Register</button>
-//       </form>
-//       <p>Already have an account? <Link to="/login">Login here</Link></p>
-//     </div>
-//   );
-// };
-
-// export default Register;
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API from '../api';

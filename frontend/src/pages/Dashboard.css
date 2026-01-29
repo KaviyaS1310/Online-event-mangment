@@ -1,121 +1,3 @@
-/* /* import { useEffect, useState } from 'react';
-import API from '../api';
-import Navbar from '../components/Navbar';
-import EventCard from '../components/EventCard';
-import './Dashboard.css';
-
-const Dashboard = () => {
-  const [events, setEvents] = useState([]);
-  const [newEvent, setNewEvent] = useState({ title: '', description: '', capacity: '' });
-
-  const fetchEvents = async () => {
-    try {
-      const { data } = await API.get('/events');
-      setEvents(data);
-    } catch (err) { console.error(err); }
-  };
-
-  useEffect(() => { fetchEvents(); }, []);
-
-  const handleAddEvent = async (e) => {
-    e.preventDefault();
-    try {
-      await API.post('/events', newEvent); // Backend call to Create
-      alert("Event Added Successfully!");
-      setNewEvent({ title: '', description: '', capacity: '' });
-      fetchEvents(); // Refresh list
-    } catch (err) { alert("Failed to add event"); }
-  };
-
-  return (
-    <div className="dashboard-container">
-      <Navbar />
-      <div className="admin-controls">
-        <h3>Create New Event</h3>
-        <form onSubmit={handleAddEvent}>
-          <input type="text" placeholder="Event Title" value={newEvent.title}
-            onChange={(e) => setNewEvent({...newEvent, title: e.target.value})} required />
-          <textarea placeholder="Description" value={newEvent.description}
-            onChange={(e) => setNewEvent({...newEvent, description: e.target.value})} required />
-          <input type="number" placeholder="Capacity" value={newEvent.capacity}
-            onChange={(e) => setNewEvent({...newEvent, capacity: e.target.value})} required />
-          <button type="submit" className="add-btn">Add Event</button>
-        </form>
-      </div>
-
-      <h2>Existing Events</h2>
-      <div className="event-grid">
-        {events.map(event => (
-          <EventCard key={event._id} event={event} refresh={fetchEvents} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default Dashboard; */
-.dashboard-container {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Same as Login */
-  color: white;
-  padding-bottom: 50px;
-}
-
-.dashboard-content {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.admin-section {
-  background-color: #1e1e2f;
-  padding: 30px;
-  border-radius: 15px;
-  margin-bottom: 40px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-/* Fixes the alignment of the input boxes 
-.add-event-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-/* }
-
-.add-event-form input, 
-.add-event-form textarea {
-  width: 100%;
-  padding: 12px;
-  border-radius: 5px;
-  border: none;
-  background: #2a2a3d;
-  color: white;
-  box-sizing: border-box; /* Ensures padding doesn't break alignment 
-  font-family: inherit;
-}
-
-.add-event-form textarea {
-  height: 100px;
-  resize: vertical;
-}
-
-.btn-primary {
-  background-color: #00a8ff;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.event-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
-} */ 
-
 .dashboard-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
@@ -136,7 +18,6 @@ export default Dashboard; */
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
-/* Vertical layout fixes your alignment issue */
 .add-event-form {
   display: flex;
   flex-direction: column;
@@ -151,7 +32,7 @@ export default Dashboard; */
   border: 1px solid #333;
   background-color: #2a2a3d;
   color: white;
-  box-sizing: border-box; /* Ensures inputs align perfectly */
+  box-sizing: border-box; 
 }
 
 .add-event-form textarea {

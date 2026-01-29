@@ -1,43 +1,3 @@
-// // const EventCard = ({ event }) => {
-// //   return (
-// //     <div style={{ 
-// //       border: '1px solid #ddd', 
-// //       padding: '15px', 
-// //       borderRadius: '8px', 
-// //       margin: '10px 0',
-// //       boxShadow: '0 2px 4px rgba(0,0,0,0.1)' 
-// //     }}>
-// //       <h3 style={{ color: '#2c3e50', margin: '0 0 10px 0' }}>{event.title}</h3>
-// //       <p style={{ color: '#7f8c8d' }}>{event.description}</p>
-// //       <div style={{ fontWeight: 'bold', color: '#27ae60' }}>
-// //         Capacity: {event.capacity}
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default EventCard;
-
-// import API from '../api';
-
-// const EventCard = ({ event, refresh }) => {
-//   const handleRegister = async () => {
-//     try {
-//       await API.post(`/events/${event._id}/register`);
-//       alert("Registered!");
-//       refresh();
-//     } catch (err) { alert(err.response?.data?.message || "Error"); }
-//   };
-
-//   return (
-//     <div className="event-card-styled"> {/* Use Dashboard.css classes */}
-//       <h3>{event.title}</h3>
-//       <p>{event.description}</p>
-//       <p>Spots: {event.capacity}</p>
-//       <button onClick={handleRegister} className="register-btn">Register</button>
-//     </div>
-//   );
-// };
 import API from '../api';
 
 const EventCard = ({ event, refresh }) => {
@@ -81,4 +41,4 @@ const cardStyle = {
   border: '1px solid #333'
 };
 
-export default EventCard; // Essential to fix ESLint error
+export default EventCard; 
