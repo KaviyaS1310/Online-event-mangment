@@ -10,11 +10,14 @@ const {
 } = require('../controllers/eventController');
 const { protect, adminOnly } = require('../middleware/authMiddleware');
 
-router.get('/', getEvents); // READ ALL
-router.get('/:id', getEventById); // READ ONE
-router.post('/', protect, adminOnly, createEvent); // CREATE
-router.put('/:id', protect, adminOnly, updateEvent); // UPDATE
-router.delete('/:id', protect, adminOnly, deleteEvent); // DELETE
-router.post('/:id/register', protect, registerForEvent);
+// Public routes (no authentication required)
+router.get('/', getEvents); // READ ALL - Public
+router.get('/:id', getEventById); // READ ONE - Public
+
+// Protected routes (authentication required)
+router.post('/', protect, adminOnly, createEvent); // CREATE - Admin only
+router.put('/:id', protect, adminOnly, updateEvent); // UPDATE - Admin only
+router.delete('/:id', protect, adminOnly, deleteEvent); // DELETE - Admin only
+router.post('/:id/register', protect, registerForEvent); // REGISTER - Authenticated users
 
 module.exports = router;

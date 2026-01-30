@@ -31,31 +31,40 @@ require('dotenv').config();
 
 const app = express();
 
-// 1. Updated Middleware: Specific CORS configuration
+// CORS configuration
 app.use(cors({
   origin: [
-    "https://online-event-mangment-lb7k.vercel.app", // Your specific frontend URL
-    "http://localhost:5173"                         // For local testing
+    "https://online-event-mangment-lb7k.vercel.app",
+    "http://localhost:5173"
   ],
   credentials: true
 }));
 
-app.use(express.json()); 
+app.use(express.json());
 
-// 2. Routes
-const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes);
-app.use('/api/events', require('./routes/eventRoutes'));
-
-// 3. Database Connection
+// Database Connection
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log(" MongoDB Connected Successfully"))
-  .catch(err => console.log(" DB Connection Error: ", err));
+  .then(() => console.log("MongoDB Connected Successfully"))
+  .catch(err => {
+    console.error("DB Connection Error:", err);
+    process.exit(1);
+  });
 
-// 4. Test Routes
+// Routes
+try {
+  const authRoutes = require('./routes/authRoutes');
+  const eventRoutes = require('./routes/eventRoutes');
+  
+  app.use('/api/auth', authRoutes);
+  app.use('/api/events', eventRoutes);
+} catch (error) {
+  console.error('Route loading error:', error);
+}
+
+// Test Routes
 app.get('/', (req, res) => res.send("Event API is running..."));
 
-// Health check endpoint
+// Health check
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
@@ -65,11 +74,23 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 5. Port Listening (Still useful for local, but Vercel uses the export)
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Global error:', err);
+  res.status(500).json({ 
+    message: 'Internal Server Error',
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
+
 const PORT = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => console.log(` Server ready on port ${PORT}`));
+  app.listen(PORT, () => console.log(`Server ready on port ${PORT}`));
 }
 
-// 6. CRUCIAL for Vercel: Export the app
 module.exports = app;

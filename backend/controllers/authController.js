@@ -41,18 +41,40 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: "Email and password are required" });
         }
 
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: "Please provide a valid email address" });
+        }
+
         // Find user by email
         const user = await User.findOne({ email });
-        if (!user) return res.status(400).json({ message: "User not found" });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
 
         // Check if password matches
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
 
         // Create a JWT Token
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign(
+            { id: user._id, role: user.role }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '1d' }
+        );
 
-        res.status(200).json({ token, user: { name: user.name, role: user.role } });
+        res.status(200).json({ 
+            token, 
+            user: { 
+                id: user._id,
+                name: user.name, 
+                email: user.email,
+                role: user.role 
+            } 
+        });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: "Server Error", error: error.message });
