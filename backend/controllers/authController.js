@@ -7,6 +7,11 @@ exports.register = async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
 
+        // Validate required fields
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: "Name, email, and password are required" });
+        }
+
         // Check if user already exists
         let user = await User.findOne({ email });
         if (user) return res.status(400).json({ message: "User already exists" });
@@ -16,12 +21,13 @@ exports.register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Save User
-        user = new User({ name, email, password: hashedPassword, role });
+        user = new User({ name, email, password: hashedPassword, role: role || 'user' });
         await user.save();
 
         res.status(201).json({ message: "User registered successfully!" });
     } catch (error) {
-        res.status(500).json({ message: "Server Error", error });
+        console.error('Register error:', error);
+        res.status(500).json({ message: "Server Error", error: error.message });
     }
 };
 
@@ -29,6 +35,11 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        // Validate required fields
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required" });
+        }
 
         // Find user by email
         const user = await User.findOne({ email });
@@ -43,6 +54,7 @@ exports.login = async (req, res) => {
 
         res.status(200).json({ token, user: { name: user.name, role: user.role } });
     } catch (error) {
-        res.status(500).json({ message: "Server Error", error });
+        console.error('Login error:', error);
+        res.status(500).json({ message: "Server Error", error: error.message });
     }
 };

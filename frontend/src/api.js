@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'https://online-event-mangment-lb7k.vercel.app/api' });
+const API = axios.create({ baseURL: 'https://online-event-mangment.vercel.app/api' });
 
 // Automatically attaches the token from local storage to every request
 API.interceptors.request.use((req) => {

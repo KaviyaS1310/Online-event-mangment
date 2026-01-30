@@ -52,8 +52,18 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log(" MongoDB Connected Successfully"))
   .catch(err => console.log(" DB Connection Error: ", err));
 
-// 4. Test Route
+// 4. Test Routes
 app.get('/', (req, res) => res.send("Event API is running..."));
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'API is healthy',
+    timestamp: new Date().toISOString(),
+    database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
+  });
+});
 
 // 5. Port Listening (Still useful for local, but Vercel uses the export)
 const PORT = process.env.PORT || 5000;
